@@ -47,3 +47,33 @@ header .left .search-box input{
  margin-left: 0.5em;
  color: var(--black);
 }
+section{
+    padding: 2.5em
+}
+.hero .row{
+    display: flex;
+    align-items: start;
+    justify-content: space-around
+}
+.hero .row h3{
+    font-size: 5rem;
+    font-weight: 500;
+    line-height: 1em;
+}
+.hero .row p{
+    margin: 2em 0;
+    color: var(--dim);
+    width: 80%;
+}
+
+.hero .row button{
+    font-size: 1.2rem
+}
+.hero .col{
+    width: 50%
+}
+.hero .row img{
+    width: 100%;
+    height: 400px;
+    background-color: rgb(240, 240, 240)
+}
