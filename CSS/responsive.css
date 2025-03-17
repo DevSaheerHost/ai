@@ -1,0 +1,79 @@
+/* Smart phones */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  /* Header */
+  header .nav {
+    display: none;
+  }
+  header .left{
+    max-width: 100%;
+    overflow: hidden;
+  }
+  header .left .search-box input{
+    font-size: 1.4rem;
+  }
+  /* Hero */
+  .hero {
+    word-wrap: break-word;
+  }
+  .hero .row{
+    display: block;
+  }
+  .hero .row h3{
+    font-size: 2.7rem;
+    text-align: center;
+  }
+  .hero .row img {
+    display: none;
+  }
+  .hero .row button{
+    margin: auto;
+    display: block;
+  }
+  .hero .col{
+    width: 100%;
+  }
+
+  /* Product view */
+  .product-view .list{
+justify-content: center;
+  }
+  /* Over view */
+  .over-view{
+    padding: 0;
+  }
+  .over-view .card{
+max-height: 100vh;
+  }
+  .over-view .card {
+    display: block;
+    overflow-y: scroll;
+  }
+  .over-view .card .box {
+    width: 100%;
+    overflow-y: auto;
+  }
+  .over-view.active .card i.close{
+    right: 1em;
+    top: 1em;
+  }
+
+  /* Seller */
+  .seller .navigtor{
+    display: none;
+  }
+}
+
+/* Tablets */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Styles */
+}
+
+/* DeskTop and larger screen */
+@media only screen and (min-width: 1200px) {
+  /* Styles */
+}
+
+/* Landscape */
+@media (min-width: 600px) and (orientation: landscape) {
+  /* CSS rules */
+}

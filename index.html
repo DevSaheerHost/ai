@@ -6,6 +6,7 @@
     <title>E-commerce</title>
     <link rel="stylesheet" href="./CSS/theme.css" />
     <link rel="stylesheet" href="./CSS/styles.css" />
+    <link rel="stylesheet" href="./CSS/responsive.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -54,7 +55,7 @@
           </div>
         </div>
       </section>
-      <section class="product-view">
+      <section class="product-view" id="topProducts">
         <h2 class="title">Top products</h2>
         <div class="list">
           <div class="card">
@@ -96,9 +97,9 @@
               />
             </div>
             <div class="detail">
-              <p class="product-name">Powerbank 50000 mAh</p>
+              <p class="product-name">Realme pad high quality AI product</p>
               <p class="brand-name">Realme</p>
-              <p class="product-price">21,999</p>
+              <p class="product-price">28,999</p>
             </div>
           </div>
 
@@ -111,18 +112,18 @@
               />
             </div>
             <div class="detail">
-              <p class="product-name">Powerbank 50000 mAh</p>
-              <p class="brand-name">Realme</p>
-              <p class="product-price">21,999</p>
+              <p class="product-name">Google pixel 12GB 512GB</p>
+              <p class="brand-name">GOOGLE</p>
+              <p class="product-price">143,899</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="seller">
+      <section class="seller" id="bestSeller">
         <h2>Best Sellers in Accessories</h2>
         <div class="hori-scroll">
-          <span class="prev">
+          <span class="prev navigtor">
             <i class="fa-solid fa-chevron-left"></i>
           </span>
           <div class="img">
@@ -157,7 +158,7 @@
               alt=""
             />
           </div>
-          <span class="next"><i class="fa-solid fa-chevron-right"></i></span>
+          <span class="next navigtor"><i class="fa-solid fa-chevron-right"></i></span>
         </div>
       </section>
     </main>
@@ -165,7 +166,57 @@
     <!-- position fixed components -->
 
     <!-- over view -->
-    section.
+    <section class="over-view close" id="overView">
+      <div class="card">
+        <i class="fa-solid fa-xmark close" id="closeOverView"></i>
+        <div class="image-box box">
+          <img
+            src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+            alt="item" id="main_img"
+          />
+          <div class="sub-image-wrap">
+            <img
+              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+              alt="item"
+            /><img
+              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+              alt="item2"
+            /><img
+              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
+              alt="tiem3"
+            />
+          </div>
+        </div>
+        <div class="detail-box box">
+          <h2 class="title" id="title">Google pixel 12GB 512GB</h2>
+          <p class="gray first-child" id="brand">GOOGLE</p>
+          <p class="gray" id="color">Black</p>
+
+          <p class="description" id="description">
+            Richard McClintock, a Latin professor ... and going through the
+            cites of the word in classical literature, discovered the
+            undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
+            1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and
+            Evil) by Cicero
+          </p>
+
+          <p class="price" id="price">$ 59,000</p>
+
+          <div class="btn-wrapper">
+            <div class="qty-box">
+              <label for="QTY">QTY</label>
+              <select name="QTY" id="QTY">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+            <button class="buy">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <footer>
       <h3>About</h3>
