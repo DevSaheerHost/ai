@@ -29,5 +29,16 @@
     <main>
         
     </main>
+    <script>
+        // Get the URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedArray = urlParams.get('array');
+
+        // Decode the array and parse it
+        const retrievedArray = JSON.parse(decodeURIComponent(encodedArray));
+
+        // Display the array on the page
+        document.querySelector('main').innerText = `Array: ${retrievedArray.productName}`
+    </script>
   </body>
 </html>

@@ -1,7 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 * {
   padding: 0;
   margin: 0;
-  font-family: "Courier New", Courier, monospace;
+  font-family: "Roboto", sans-serif;
   box-sizing: border-box;
   outline: none;
   text-decoration: none;
@@ -54,6 +55,10 @@ header .left .search-box input {
 .right a {
   margin-left: 0.5em;
   color: var(--black);
+}
+.right button{
+  margin-left: 1em;
+  padding: .5em 2em;
 }
 section {
   padding: 2.5em;

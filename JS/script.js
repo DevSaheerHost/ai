@@ -2,7 +2,11 @@ const $ = (selector) => document.querySelector(selector);
 
 const closeOverView = $("#closeOverView");
 
-// functions body
+// public vareables start here
+const overData = {}
+// public vareables end here----//
+
+// functions bodys start
 
 const openOverView = (overData) => {
   const overVIewElem = $("#overView");
@@ -20,18 +24,21 @@ const openOverView = (overData) => {
   elem_title.innerText = overData.productName;
   elem_color.innerText = overData.productColor;
 };
+
+// functions bodys start end-----//
+
+// User Events line click , scroll, hover, etc...
+
 closeOverView.onclick = () => {
   $("#overView").classList.remove("active");
   $("#overView").classList.add("close");
 };
-$("header").onclick = () => {};
 
 const topProducts = $("#topProducts");
 const topProductsCard = topProducts.querySelectorAll(".card");
 
 topProductsCard.forEach((element) => {
   element.onclick = () => {
-    const overData = [];
     productImg = element.querySelector("img").getAttribute("src");
     productName = element.querySelector("p.product-name").innerText;
     productPrice = element.querySelector("p.product-price").innerText;
@@ -45,19 +52,34 @@ topProductsCard.forEach((element) => {
   };
 });
 
-
-$("#bestSeller").querySelectorAll(".img").forEach((element) => {
+$("#bestSeller")
+  .querySelectorAll(".img")
+  .forEach((element) => {
     element.onclick = () => {
-      const overData = [];
       productImg = element.querySelector("img").getAttribute("src");
-      productName = `element.querySelector("p.product-name").innerText;`
-      productPrice = `element.querySelector("p.product-price").innerText;`
-      productBrand = `element.querySelector("p.brand-name").innerText;`
+      productName = `element.querySelector("p.product-name").innerText;`;
+      productPrice = `element.querySelector("p.product-price").innerText;`;
+      productBrand = `element.querySelector("p.brand-name").innerText;`;
       overData.productImg = productImg;
       overData.productName = `productName`;
       overData.productPrice = `productPrice`;
       overData.productBrand = `productBrand`;
       overData.productColor = null;
       openOverView(overData);
+      
+      // const storedData = localStorage.getItem("productData");
+
+  // console.log(storedData);
     };
   });
+
+$("#buyNowBtn").onclick = () => {
+  const encodedArray = encodeURIComponent(JSON.stringify(overData));
+
+  window.location.href = `../product/index.html?array=${encodedArray}`;
+
+
+
+};
+
+// user events end---//
