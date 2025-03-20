@@ -76,7 +76,8 @@ $("#bestSeller")
 $("#buyNowBtn").onclick = () => {
   const encodedArray = encodeURIComponent(JSON.stringify(overData));
 
-  window.location.href = `../product/index.html?array=${encodedArray}`;
+  // window.location.href = `../product/index.html?array=${encodedArray}`;
+  window.location.href = `../product/#loginPage`;
 
 
 

@@ -4,11 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product</title>
-    <link rel="stylesheet" href="../CSS/styles.css">
-    <link rel="stylesheet" href="../CSS/theme.css">
+    <link rel="stylesheet" href="../CSS/styles.css" />
+    <link rel="stylesheet" href="../CSS/theme.css" />
+    <link rel="stylesheet" href="../CSS/responsive.css" />
+    <link rel="stylesheet" href="./CSS/style.css" />
   </head>
   <body>
-    <header>
+    <header class="hidden">
       <div class="left">
         <div class="logo"><h3>WEB Store</h3></div>
         <div class="search-box">
@@ -20,25 +22,58 @@
       </div>
       <div class="right nav">
         <a href="#">Products</a>
-        <a href="#">Services</a>
+        <a href="#">Services</a>Hi, Welcome back
+
         <a href="#">Cart</a>
         <button class="login">Login</button>
       </div>
     </header>
 
     <main>
-        
+      <div class="form">
+        <div class="login" id="loginPage">
+          <h1>
+            Hi, <br />
+            Welcome back
+          </h1>
+          <div class="input_field">
+            <input type="email" placeholder="Email" />
+            <input type="password" name="" id="" placeholder="Password" />
+          </div>
+          <p class="forgot">Forgot Password?</p>
+          <button class="login">LogIn</button>
+          <p class="no_ac">Don't have account? <a href="#signupPage">SignUp</a></p>
+        </div>
+
+        <!-- Signup -->
+
+        <div class="login signup" id="signupPage">
+          <h1>
+            Hi, <br />
+            Welcome TO <span>WebStore</span>
+          </h1>
+          <div class="input_field">
+            <input type="name" name="" id="" placeholder="Enter your name">
+            <input type="email" placeholder="Enter email" />
+            <input type="password" name="" id="" placeholder="Password" />
+
+          </div>
+          <!-- <p class="forgot">Forgot Password?</p> -->
+          <button class="login_btn">SignUp</button>
+          <p class="no_ac">Already have account? <a href="#loginPage">LogIn</a></p>
+        </div>
+      </div>
     </main>
     <script>
-        // Get the URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const encodedArray = urlParams.get('array');
+      // Get the URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const encodedArray = urlParams.get("array");
 
-        // Decode the array and parse it
-        const retrievedArray = JSON.parse(decodeURIComponent(encodedArray));
+      // Decode the array and parse it
+      const retrievedArray = JSON.parse(decodeURIComponent(encodedArray));
 
-        // Display the array on the page
-        document.querySelector('main').innerText = `Array: ${retrievedArray.productName}`
+      // Display the array on the page
+      // document.querySelector('main').innerText = `Array: ${retrievedArray.productName}`
     </script>
   </body>
 </html>
