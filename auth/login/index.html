@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product</title>
-    <link rel="stylesheet" href="../CSS/styles.css" />
-    <link rel="stylesheet" href="../CSS/theme.css" />
-    <link rel="stylesheet" href="../CSS/responsive.css" />
+    <link rel="stylesheet" href="../../CSS/styles.css" />
+    <link rel="stylesheet" href="../../CSS/theme.css" />
+    <link rel="stylesheet" href="../../CSS/responsive.css" />
     <link rel="stylesheet" href="./CSS/style.css" />
   </head>
   <body>
@@ -37,11 +37,11 @@
             Welcome back
           </h1>
           <div class="input_field">
-            <input type="email" placeholder="Email" />
-            <input type="password" name="" id="" placeholder="Password" />
+            <input type="email" placeholder="Email" id="loginEmail" />
+            <input type="password" name="" id="loginPass" placeholder="Password" />
           </div>
           <p class="forgot">Forgot Password?</p>
-          <button class="login">LogIn</button>
+          <button class="login" id="loginBtn" onclick="authenticate('login')">LogIn</button>
           <p class="no_ac">Don't have account? <a href="#signupPage">SignUp</a></p>
         </div>
 
@@ -53,27 +53,34 @@
             Welcome TO <span>WebStore</span>
           </h1>
           <div class="input_field">
-            <input type="name" name="" id="" placeholder="Enter your name">
-            <input type="email" placeholder="Enter email" />
-            <input type="password" name="" id="" placeholder="Password" />
+            <input type="name" name="" id="name" placeholder="Enter your name">
+            <input type="number" name="" id="number" placeholder="+91 123 4567 789 ">
+            <input type="email" placeholder="Enter email" id="signupEmail" />
+            <input type="password" name="" id="signupPass" placeholder="Password" />
 
           </div>
           <!-- <p class="forgot">Forgot Password?</p> -->
-          <button class="login_btn">SignUp</button>
+          <button class="login_btn" onclick="authenticate('signup')">SignUp</button>
           <p class="no_ac">Already have account? <a href="#loginPage">LogIn</a></p>
         </div>
+        <p id="hint"></p>
       </div>
     </main>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="./JS/script.js"></script>
     <script>
       // Get the URL parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const encodedArray = urlParams.get("array");
+      // const urlParams = new URLSearchParams(window.location.search);
+      // const encodedArray = urlParams.get("array");
 
       // Decode the array and parse it
-      const retrievedArray = JSON.parse(decodeURIComponent(encodedArray));
+      // const retrievedArray = JSON.parse(decodeURIComponent(encodedArray));
 
       // Display the array on the page
       // document.querySelector('main').innerText = `Array: ${retrievedArray.productName}`
+
+
     </script>
   </body>
 </html>
