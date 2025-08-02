@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E-commerce</title>
+    <title>AI</title>
     <link rel="stylesheet" href="./CSS/theme.css" />
     <link rel="stylesheet" href="./CSS/styles.css" />
-    <link rel="stylesheet" href="./CSS/responsive.css" />
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -20,211 +20,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   </head>
   <body>
-    <header>
-      <div class="left">
-        <div class="logo"><h3>WEB Store</h3></div>
-        <div class="search-box">
-          <span class="icon">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </span>
-          <input type="text" placeholder="Search our products" />
-        </div>
-      </div>
-      <div class="right nav">
-        <a href="#">Products</a>
-        <a href="#">Services</a>
-        <a href="#">Cart</a>
-        <button class="login">Login</button>
-      </div>
-    </header>
-
+    
+    
     <main>
-      <section class="hero">
-        <div class="row">
-          <div class="col">
-            <h3>Smart money management with AI</h3>
-
-            <p>
-              We untrestand the importance of trust, security. and personalized
-              when it comes to managing your money
-            </p>
-
-            <button>Login</button>
-          </div>
-          <div class="col">
-            <img
-              src="https://media.istockphoto.com/id/1398247155/photo/businessman-working-on-laptops-with-signs-of-the-top-service-quality-control-certification.jpg?s=612x612&w=0&k=20&c=UNJljhTsUNOfNSvLrCKUg8MVoswRQJfk4MApGq_e3aE="
-              alt="product"
-            />
-          </div>
-        </div>
-      </section>
-      <section class="product-view" id="topProducts">
-        <h2 class="title">Top products</h2>
-        <div class="list" id="topProductListElem">
-          <div class="card">
-            <div class="img">
-              <img
-                src="https://cdn1.smartprix.com/rx-iXKnG8Ep4-w280-h280/realme-rmp2005-20000.webp"
-                alt=""
-                class="product-img"
-              />
-            </div>
-            <div class="detail">
-              <p class="product-name">Powerbank 50000 mAh</p>
-              <p class="brand-name">Realme</p>
-              <p class="product-price">21,999</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="img">
-              <img
-                src="https://www.oppo.com/content/dam/oppo/product-asset-library/specs/pad-air/oppo-pad-air-pg-specs.png"
-                alt=""
-                class="product-img"
-              />
-            </div>
-            <div class="detail">
-              <p class="product-name">Oppo pad air 2</p>
-              <p class="brand-name">oppo</p>
-              <p class="product-price">26,999</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="img">
-              <img
-                src="https://fdn2.gsmarena.com/vv/bigpic/realme-pad.jpg"
-                alt=""
-                class="product-img"
-              />
-            </div>
-            <div class="detail">
-              <p class="product-name">Realme pad high quality AI product</p>
-              <p class="brand-name">Realme</p>
-              <p class="product-price">28,999</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="img">
-              <img
-                src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
-                alt=""
-                class="product-img"
-              />
-            </div>
-            <div class="detail">
-              <p class="product-name">Google pixel 12GB 512GB</p>
-              <p class="brand-name">GOOGLE</p>
-              <p class="product-price">143,899</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="seller" id="bestSeller">
-        <h2>Best Sellers in Accessories</h2>
-        <div class="hori-scroll">
-          <span class="prev navigtor">
-            <i class="fa-solid fa-chevron-left"></i>
-          </span>
-          <div class="img">
-            <img
-              src="https://m.media-amazon.com/images/I/71nVIiWEcgL._AC_SY200_.jpg"
-              alt=""
-            />
-          </div>
-          <div class="img">
-            <img
-              src="https://m.media-amazon.com/images/I/51IFiSD+kCL._AC_SY200_.jpg"
-              alt=""
-            />
-          </div>
-          <div class="img">
-            <img
-              src="https://m.media-amazon.com/images/I/71ZxRYYmB4L._AC_SY200_.jpg"
-              alt="https://m.media-amazon.com/images/I/61Sglba97DL._AC_SY200_.jpg"
-            />
-          </div>
-
-          <div class="img">
-            <img
-              src="https://m.media-amazon.com/images/I/61Sglba97DL._AC_SY200_.jpg"
-              alt="https://m.media-amazon.com/images/I/61TGq9hHOKL._AC_SY200_.jpg"
-            />
-          </div>
-
-          <div class="img">
-            <img
-              src="https://m.media-amazon.com/images/I/61TGq9hHOKL._AC_SY200_.jpg"
-              alt=""
-            />
-          </div>
-          <span class="next navigtor"><i class="fa-solid fa-chevron-right"></i></span>
-        </div>
-      </section>
+      
     </main>
 
-    <!-- position fixed components -->
-
-    <!-- over view -->
-    <section class="over-view close" id="overView">
-      <div class="card">
-        <i class="fa-solid fa-xmark close" id="closeOverView"></i>
-        <div class="image-box box">
-          <img
-            src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
-            alt="item" id="main_img"
-          />
-          <div class="sub-image-wrap">
-            <img
-              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
-              alt="item"
-            /><img
-              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
-              alt="item2"
-            /><img
-              src="https://m.media-amazon.com/images/I/61fh21u3DJL.__AC_SX300_SY300_QL70_FMwebp_.jpg"
-              alt="tiem3"
-            />
-          </div>
-        </div>
-        <div class="detail-box box">
-          <h2 class="title" id="title">Google pixel 12GB 512GB</h2>
-          <p class="gray first-child" id="brand">GOOGLE</p>
-          <p class="gray" id="color">Black</p>
-
-          <p class="description" id="description">
-            Richard McClintock, a Latin professor ... and going through the
-            cites of the word in classical literature, discovered the
-            undoubtable source. Lorem Ipsum comes from sections 1.10.32 and
-            1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and
-            Evil) by Cicero
-          </p>
-
-          <p class="price" id="price">$ 59,000</p>
-
-          <div class="btn-wrapper">
-            <div class="qty-box">
-              <label for="QTY">QTY</label>
-              <select name="QTY" id="QTY">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-              </select>
-            </div>
-            <button class="buy" id="buyNowBtn">Buy Now</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <footer>
-      <h3>About</h3>
-    </footer>
+    
     <script src="./JS/script.js"></script>
   </body>
 </html>
