@@ -49,6 +49,10 @@ async function recall(key) {
 // Process input
 async function handle() {
   const inputField = document.getElementById("userInput");
+
+  if (!inputField.value) {
+    return
+  }
   const input = inputField.value.trim().toLowerCase();
   inputField.value = "";
   chatAppend("You", input);
