@@ -288,3 +288,30 @@ users
      └── profile
           ├── my name: "Saheer"
           └── my location: "Malappuram"
+          
+          
+          
+          
+          
+users
+ └── user_1723457623
+     ├── memory
+     ├── profile
+     └── chats
+         ├── -N8asdasdas123
+         │    ├── sender: "You"
+         │    ├── message: "what is motherboard"
+         │    └── timestamp: 1723457623000
+         └── -N8asdasdas124
+              ├── sender: "GPT"
+              ├── message: "motherboard is 'PCB where...'"
+              └── timestamp: ...
+              
+              
+              
+knowledge/
+  ├── water_is_liquid: "Water is a liquid"
+  ├── motherboard: "A main circuit board in a computer or mobile"
+  ├── capacitor: "Stores electrical energy in a circuit"
+  
+  

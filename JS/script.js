@@ -54,6 +54,41 @@ async function handle() {
   chatAppend("You", input);
 
   chatHistory.push({ user: input });
+  
+  
+  
+  const globalAnswer = await fetchGlobalKnowledge(input);
+if (globalAnswer) {
+  chatAppend("GPT", globalAnswer);
+  return;
+}
+
+
+  // ✅ If user says "yes" after a suggestion
+  if (input === "yes" && lastSuggestedWord && lastUserUnknownWord) {
+  // First try to get from global
+  let meaning = await globalRecall(lastSuggestedWord);
+
+  // ✅ fallback if not found
+  if (!meaning) {
+    meaning = await fetchGlobalKnowledge(lastSuggestedWord);
+  }
+
+  if (meaning) {
+    lastAIResponse = `${lastSuggestedWord} means: "${meaning}"`;
+    chatAppend("GPT", lastAIResponse);
+
+    // ✅ Auto-learn: wrong word → correct meaning
+    learn(lastUserUnknownWord, meaning);
+
+    // ✅ Reset memory
+    lastSuggestedWord = null;
+    lastUserUnknownWord = null;
+  } else {
+    chatAppend("GPT", `Sorry, I still couldn't find "${lastSuggestedWord}".`);
+  }
+  return;
+}
 
   if (await processPersonalInfo(input)) return;
 
@@ -69,12 +104,16 @@ async function handle() {
   }
 
   if (input.includes(" = ")) {
-    const [key, value] = input.split(" = ");
-    learn(key, value);
-    lastAIResponse = `Learned: "${key}" = "${value}"`;
-    chatAppend("GPT", lastAIResponse);
-    return;
-  }
+  const [key, value] = input.split(" = ");
+  learn(key, value);
+  lastAIResponse = `Learned: "${key}" = "${value}"`;
+  chatAppend("GPT", lastAIResponse);
+  
+  // ✅ ADD THIS LINE
+  ensureGlobalKnowledge(key, value);
+  
+  return;
+}
 
   if (greetingSynonyms.some(g => input.includes(g))) {
     lastAIResponse = "Hello! 👋";
@@ -99,33 +138,78 @@ async function handle() {
     chatAppend("GPT", lastAIResponse);
     return;
   }
+  
+  
+  
 
   const words = input.split(" ");
   for (let word of words) {
-    const meaning = await recall(word);
+    let meaning = await recall(word);
+    if (!meaning) {
+      meaning = await globalRecall(word);
+    }
+
     if (meaning) {
-      lastAIResponse = `${word} is "${meaning}"`;
+      lastAIResponse = `${word} means: "${meaning}"`;
       chatAppend("GPT", lastAIResponse);
       return;
+    } else {
+      // ❓ Not found → suggest
+      
+      // Before calling suggestSimilarWords()
+const cleanedInput = input.replace(/s$/, ''); // "leds" => "led"
+
+// Use cleanedInput in further logic
+let meaning = await recall(cleanedInput);
+if (!meaning) {
+  meaning = await globalRecall(cleanedInput);
+}
+
+      const suggestions = await suggestSimilarWords(word);
+      if (suggestions.length > 0) {
+        lastSuggestedWord = suggestions[0];           // ✅ remember top suggestion
+        lastUserUnknownWord = word;                   // ✅ remember unknown original
+        lastAIResponse = `I don't know "${word}", but did you mean: ${suggestions.join(", ")}? 🤔`;
+        chatAppend("GPT", lastAIResponse);
+        return;
+      }
     }
   }
+
+  
 
   if (input.startsWith("what is ")) {
     const unknown = input.replace("what is", "").trim();
     chatAppend("GPT", `I don't know "${unknown}". Can you teach me? Use: ${unknown} = meaning`);
     return;
   }
-  
-  
 
   lastAIResponse = "I don't know that yet. Teach me using: `word = meaning`";
   chatAppend("GPT", lastAIResponse);
 }
 
 // Show chat
+// Change this inside chatAppend()
 function chatAppend(sender, msg) {
   chatBox.innerHTML += `<div class='chatParent ${sender.toLowerCase()}'><p class='${sender.toLowerCase()}'><b>${sender}:</b> ${msg}</p></div>`;
   chatBox.scrollTop = chatBox.scrollHeight;
+
+  // ✅ Temporarily store user + GPT pair for combined save
+  if (sender === "You") {
+    // Store user message to a variable
+    window.__lastUserMessage = msg;
+  } else if (sender === "GPT" && window.__lastUserMessage) {
+    // Save both user & GPT message to Firebase as one object
+    const timeId = Date.now();
+    database.ref(`users/${userId}/chats/${timeId}`).set({
+      user: window.__lastUserMessage,
+      gpt: msg,
+      time: new Date().toISOString()
+    });
+
+    // Clear temporary user msg
+    window.__lastUserMessage = null;
+  }
 }
 
 // Voice Output
@@ -221,3 +305,107 @@ if (!userId) {
   userId = "user_" + Date.now();
   localStorage.setItem("userId", userId);
 }
+
+
+
+
+async function globalRecall(key) {
+  const cleanKey = key.toLowerCase().trim().replace(/\s+/g, "_");
+  try {
+    const snapshot = await database.ref(`knowledge/${cleanKey}`).once("value");
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+
+
+
+
+
+
+
+async function fetchGlobalKnowledge(query) {
+  const cleanKey = query.toLowerCase().trim().replace(/\s+/g, "_");
+  
+  // Try: what_is_water → water
+  let keyword = cleanKey;
+  if (cleanKey.startsWith("what_is_")) {
+    keyword = cleanKey.replace("what_is_", "");
+  } else if (cleanKey.startsWith("define_")) {
+    keyword = cleanKey.replace("define_", "");
+  } else if (cleanKey.startsWith("tell_me_about_")) {
+    keyword = cleanKey.replace("tell_me_about_", "");
+  }
+
+  try {
+    const snapshot = await database.ref(`global_knowledge/${keyword}`).once("value");
+    if (snapshot.exists()) {
+      return snapshot.val();
+    }
+    return null;
+  } catch (e) {
+    console.error("Global knowledge fetch error:", e);
+    return null;
+  }
+}
+
+
+
+
+
+function levenshteinDistance(a, b) {
+  const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+      }
+    }
+  }
+
+  return dp[a.length][b.length];
+}
+
+async function suggestSimilarWords(inputWord, threshold = 2) {
+  const suggestions = [];
+  const globalSnap = await database.ref("global_knowledge").once("value");
+  const globalWords = globalSnap.exists() ? Object.keys(globalSnap.val()) : [];
+
+  for (let word of globalWords) {
+    const distance = levenshteinDistance(inputWord, word);
+    if (distance <= threshold) {
+      suggestions.push({ word, distance });
+    }
+  }
+
+  suggestions.sort((a, b) => a.distance - b.distance);
+  return suggestions.map(s => s.word);
+}
+
+
+
+
+async function ensureGlobalKnowledge(word, meaning) {
+  const key = word.toLowerCase().trim().replace(/\s+/g, "_");
+  const refPath = database.ref(`global_knowledge/${key}`);
+  const snap = await refPath.once("value");
+  if (!snap.exists()) {
+    await refPath.set(meaning);
+    console.log(`${word} added to global knowledge.`);
+  } else {
+    console.log(`${word} already exists.`);
+  }
+}
+
+// Use this
+ensureGlobalKnowledge("capacitor", "A device that stores electrical energy");
