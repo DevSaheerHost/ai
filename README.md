@@ -275,3 +275,16 @@ function processPersonalInfo(input) {
 
 </body>
 </html>
+
+
+
+
+
+users
+ └── user_1690983423
+     ├── memory
+     │    ├── motherboard: "PCB which connects components"
+     │    └── capacitor: "stores electrical energy"
+     └── profile
+          ├── my name: "Saheer"
+          └── my location: "Malappuram"

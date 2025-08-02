@@ -31,14 +31,14 @@ const whoSynonyms = ["who made you", "who created you", "your creator"];
 function learn(key, value) {
   const cleanKey = key.toLowerCase().trim();
   localStorage.setItem(cleanKey, value);
-  database.ref("memory/" + cleanKey).set(value);
+  database.ref(`users/${userId}/memory/${cleanKey}`).set(value);
 }
 
 // Recall (try Firebase first, fallback to localStorage)
 async function recall(key) {
   const cleanKey = key.toLowerCase().trim();
   try {
-    const snapshot = await database.ref("memory/" + cleanKey).once("value");
+    const snapshot = await database.ref(`users/${userId}/memory/${cleanKey}`).once("value");
     if (snapshot.exists()) return snapshot.val();
     return localStorage.getItem(cleanKey);
   } catch (e) {
@@ -182,6 +182,8 @@ async function processPersonalInfo(input) {
     if (match) {
       const value = match[1].trim();
       learn(key, value);
+// Add this line after storing to local
+database.ref(`users/${userId}/profile/${key}`).set(value);
       lastAIResponse = reply(value);
       chatAppend("GPT", lastAIResponse);
       return true;
@@ -209,4 +211,13 @@ async function processPersonalInfo(input) {
   }
 
   return false;
+}
+
+
+
+// Generate userID if not already stored
+let userId = localStorage.getItem("userId");
+if (!userId) {
+  userId = "user_" + Date.now();
+  localStorage.setItem("userId", userId);
 }
