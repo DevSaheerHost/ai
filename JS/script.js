@@ -173,7 +173,7 @@ if (!meaning) {
       if (suggestions.length > 0) {
         lastSuggestedWord = suggestions[0];           // ✅ remember top suggestion
         lastUserUnknownWord = word;                   // ✅ remember unknown original
-        lastAIResponse = `I don't know "${word}", but did you mean: ${suggestions.join(", ")}? 🤔`;
+        lastAIResponse = `I don't know "<span>${word}</span>", but did you mean: <span>${suggestions.join(", ")}</span>? 🤔`;
         chatAppend("GPT", lastAIResponse);
         return;
       }
@@ -182,13 +182,14 @@ if (!meaning) {
 
   
 
-  if (input.startsWith("what is ")) {
-    const unknown = input.replace("what is", "").trim();
-    chatAppend("GPT", `I don't know "${unknown}". Can you teach me? Use: ${unknown} = meaning`);
-    return;
-  }
+  // if (input.startsWith("what is ")) {
+  //   const unknown = input.replace("what is", "").trim();
+    
+  //   chatAppend("GPT", `I don't know "${unknown}". Can you teach me? Use: ${unknown} = meaning`);
+  //   return;
+  // }
 
-  lastAIResponse = "I don't know that yet. Teach me using: `word = meaning`";
+  lastAIResponse = "I don't know that yet. Teach me using: <span>`word = meaning`</span>";
   chatAppend("GPT", lastAIResponse);
 }
 
@@ -338,7 +339,7 @@ async function fetchGlobalKnowledge(query) {
   
   // Try: what_is_water → water
   let keyword = cleanKey;
-  if (cleanKey.startsWith("what_is_")) {
+  if (cleanKey.startsWith("is_the")) {
     keyword = cleanKey.replace("what_is_", "");
   } else if (cleanKey.startsWith("define_")) {
     keyword = cleanKey.replace("define_", "");
@@ -398,18 +399,24 @@ async function suggestSimilarWords(inputWord, threshold = 2) {
 
 
 
-
-async function ensureGlobalKnowledge(word, meaning) {
-  const key = word.toLowerCase().trim().replace(/\s+/g, "_");
-  const refPath = database.ref(`global_knowledge/${key}`);
-  const snap = await refPath.once("value");
-  if (!snap.exists()) {
-    await refPath.set(meaning);
-    console.log(`${word} added to global knowledge.`);
-  } else {
-    console.log(`${word} already exists.`);
+async function uploadGlobalKnowledgeFromJSON() {
+  try {
+    const response = await fetch('data.json'); // Make sure this file is accessible in your server/public folder
+    const globalData = await response.json();
+    
+    for (const key in globalData) {
+      const cleanKey = key.toLowerCase().trim().replace(/\s+/g, "_");
+      const answer = globalData[key];
+      await firebase.database().ref(`global_knowledge/${cleanKey}`).set(answer);
+      console.log(`✅ Uploaded: ${cleanKey}`);
+    }
+    
+    alert("✅ All global knowledge uploaded!");
+  } catch (err) {
+    console.error("🔥 Error uploading global knowledge:", err);
+    alert("❌ Failed to upload global knowledge.");
   }
 }
 
-// Use this
-ensureGlobalKnowledge("capacitor", "A device that stores electrical energy");
+
+//document.body.onclick=()=>uploadGlobalKnowledgeFromJSON()

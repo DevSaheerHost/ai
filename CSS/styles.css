@@ -72,3 +72,10 @@ p { margin: 4px 0; }
     .chatParent .you{
       background: #BFFFBB;
     }
+    
+    .chatParent span{
+      background: #BFFFBB;
+      font-weight: 600;
+      padding: 0 .1rem;
+      color: #000;
+    }

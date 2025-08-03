@@ -315,3 +315,28 @@ knowledge/
   ├── capacitor: "Stores electrical energy in a circuit"
   
   
+  
+  
+  
+  
+  async function uploadGlobalKnowledgeFromJSON() {
+  try {
+    const response = await fetch('data.json'); // Make sure this file is accessible in your server/public folder
+    const globalData = await response.json();
+
+    for (const key in globalData) {
+      const cleanKey = key.toLowerCase().trim().replace(/\s+/g, "_");
+      const answer = globalData[key];
+      await firebase.database().ref(`global_knowledge/${cleanKey}`).set(answer);
+      console.log(`✅ Uploaded: ${cleanKey}`);
+    }
+
+    alert("✅ All global knowledge uploaded!");
+  } catch (err) {
+    console.error("🔥 Error uploading global knowledge:", err);
+    alert("❌ Failed to upload global knowledge.");
+  }
+}
+
+
+//document.body.onclick=()=>uploadGlobalKnowledgeFromJSON()
