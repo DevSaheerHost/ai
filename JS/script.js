@@ -79,7 +79,7 @@ if (globalAnswer) {
   }
 
   if (meaning) {
-    lastAIResponse = `${lastSuggestedWord} means: "${meaning}"`;
+    lastAIResponse = `${lastSuggestedWord} is: "${meaning}"`;
     chatAppend("GPT", lastAIResponse);
 
     // ✅ Auto-learn: wrong word → correct meaning
@@ -154,7 +154,7 @@ if (globalAnswer) {
     }
 
     if (meaning) {
-      lastAIResponse = `${word} means: "${meaning}"`;
+      lastAIResponse = `${word} is: "${meaning}"`;
       chatAppend("GPT", lastAIResponse);
       return;
     } else {
