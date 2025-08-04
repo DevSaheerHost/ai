@@ -56,7 +56,7 @@ async function handle() {
   const input = inputField.value.trim().toLowerCase();
   inputField.value = "";
   chatAppend("You", input);
-
+const cleanedInput = input.replace(/s$/, '');
   chatHistory.push({ user: input });
   
   
@@ -66,6 +66,22 @@ if (globalAnswer) {
   chatAppend("GPT", globalAnswer);
   return;
 }
+
+
+
+
+
+// Fallback: Try each word in sentence
+const wordsA = input.split(" ");
+for (let word of wordsA) {
+  const meaning = await globalRecall(word);
+  if (meaning) {
+    chatAppend("GPT", `${word} means: ${meaning}`);
+    return;
+  }
+}
+
+
 
 
   // ✅ If user says "yes" after a suggestion
@@ -119,11 +135,7 @@ if (globalAnswer) {
   return;
 }
 
-  if (greetingSynonyms.some(g => input.includes(g))) {
-    lastAIResponse = "Hello! 👋";
-    chatAppend("GPT", lastAIResponse);
-    return;
-  }
+  
 
   if (input.includes("how are you")) {
     lastAIResponse = "I'm a growing mind! Thanks!";
@@ -161,7 +173,7 @@ if (globalAnswer) {
       // ❓ Not found → suggest
       
       // Before calling suggestSimilarWords()
-const cleanedInput = input.replace(/s$/, ''); // "leds" => "led"
+ // "leds" => "led"
 
 // Use cleanedInput in further logic
 let meaning = await recall(cleanedInput);
@@ -180,7 +192,11 @@ if (!meaning) {
     }
   }
 
-  
+  if (greetingSynonyms.some(g => input.includes(g))) {
+  lastAIResponse = "Hello! 👋";
+  chatAppend("GPT", lastAIResponse);
+  return;
+}
 
   // if (input.startsWith("what is ")) {
   //   const unknown = input.replace("what is", "").trim();
@@ -339,7 +355,7 @@ async function fetchGlobalKnowledge(query) {
   
   // Try: what_is_water → water
   let keyword = cleanKey;
-  if (cleanKey.startsWith("is_the")) {
+  if (cleanKey.startsWith("what_is")) {
     keyword = cleanKey.replace("what_is_", "");
   } else if (cleanKey.startsWith("define_")) {
     keyword = cleanKey.replace("define_", "");
