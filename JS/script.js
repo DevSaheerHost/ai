@@ -157,15 +157,28 @@ for (let word of wordsA) {
   
   
   
+  
+  let meaning = await recall(cleanedInput);
+console.log(meaning)
+if (meaning) { // my draw
+console.log('my mean')
+  lastAIResponse = meaning
+  chatAppend('GPT', lastAIResponse)
+  return
+}
+
 
   const words = input.split(" ");
+  console.log(words)
   for (let word of words) {
     let meaning = await recall(word);
     if (!meaning) {
       meaning = await globalRecall(word);
+      console.log(`Hidden meaning: ${meaning}`)
     }
 
     if (meaning) {
+      
       lastAIResponse = `${word} is: "${meaning}"`;
       chatAppend("GPT", lastAIResponse);
       return;
@@ -176,15 +189,27 @@ for (let word of wordsA) {
  // "leds" => "led"
 
 // Use cleanedInput in further logic
-let meaning = await recall(cleanedInput);
+
+
 if (!meaning) {
   meaning = await globalRecall(cleanedInput);
+  meaning?alert(meaning):''
 }
 
       const suggestions = await suggestSimilarWords(word);
+      console.log(suggestions)
       if (suggestions.length > 0) {
         lastSuggestedWord = suggestions[0];           // ✅ remember top suggestion
         lastUserUnknownWord = word;                   // ✅ remember unknown original
+        
+        if (word.length !=1 || words ==='how') {
+          lastAIResponse = `I don't know that yet. Teach me using: <span>'word = meaning'</span> <br><br>
+          
+          or do you asking about "${suggestions}"?
+          `;
+  chatAppend("GPT", lastAIResponse);
+          return
+        }
         lastAIResponse = `I don't know "<span>${word}</span>", but did you mean: <span>${suggestions.join(", ")}</span>? 🤔`;
         chatAppend("GPT", lastAIResponse);
         return;
@@ -332,17 +357,23 @@ if (!userId) {
 
 async function globalRecall(key) {
   const cleanKey = key.toLowerCase().trim().replace(/\s+/g, "_");
-  try {
-    const snapshot = await database.ref(`knowledge/${cleanKey}`).once("value");
-    if (snapshot.exists()) {
-      return snapshot.val();
-    }
-    return null;
-  } catch (e) {
-    return null;
-  }
-}
+  const rawKey = key.toLowerCase().trim();
 
+  const tryKeys = [cleanKey, rawKey];
+
+  for (const k of tryKeys) {
+    try {
+      const snapshot = await database.ref(`knowledge/${k}`).once("value");
+      if (snapshot.exists()) {
+        return snapshot.val();
+      }
+    } catch (e) {
+      console.error("Recall error for", k, e);
+    }
+  }
+
+  return null;
+}
 
 
 
@@ -352,27 +383,28 @@ async function globalRecall(key) {
 
 async function fetchGlobalKnowledge(query) {
   const cleanKey = query.toLowerCase().trim().replace(/\s+/g, "_");
-  
-  // Try: what_is_water → water
-  let keyword = cleanKey;
-  if (cleanKey.startsWith("what_is")) {
-    keyword = cleanKey.replace("what_is_", "");
-  } else if (cleanKey.startsWith("define_")) {
-    keyword = cleanKey.replace("define_", "");
-  } else if (cleanKey.startsWith("tell_me_about_")) {
-    keyword = cleanKey.replace("tell_me_about_", "");
+  const rawKey = query.toLowerCase().trim();
+
+  const tryKeys = [cleanKey, rawKey];
+
+  for (const key of tryKeys) {
+    try {
+      const snapshot = await database.ref(`global_knowledge/${key}`).once("value");
+      if (snapshot.exists()) {
+        return snapshot.val();
+      }
+    } catch (e) {
+      console.error("Fetch error for", key, e);
+    }
   }
 
-  try {
-    const snapshot = await database.ref(`global_knowledge/${keyword}`).once("value");
-    if (snapshot.exists()) {
-      return snapshot.val();
-    }
-    return null;
-  } catch (e) {
-    console.error("Global knowledge fetch error:", e);
-    return null;
+  // 🔍 If exact not found, suggest based on word overlap
+  const suggestions = await suggestGlobalByWords(rawKey);
+  if (suggestions.length > 0) {
+    return `I couldn't find an exact answer, but maybe you meant one of these:\n→ ${suggestions.join("\n→ ")}`;
   }
+
+  return null;
 }
 
 
@@ -412,6 +444,35 @@ async function suggestSimilarWords(inputWord, threshold = 2) {
   suggestions.sort((a, b) => a.distance - b.distance);
   return suggestions.map(s => s.word);
 }
+
+
+
+
+
+async function suggestGlobalByWords(userInput, minMatch = 2) {
+  const userWords = userInput.toLowerCase().split(/\s+/);
+  const snapshot = await database.ref("global_knowledge").once("value");
+
+  if (!snapshot.exists()) return [];
+
+  const data = snapshot.val();
+  const suggestions = [];
+
+  for (const key in data) {
+    const keyWords = key.toLowerCase().split(/[_\s]+/);
+    const matchCount = keyWords.filter(word => userWords.includes(word)).length;
+
+    if (matchCount >= minMatch) {
+      suggestions.push({ key, matchCount });
+    }
+  }
+
+  // Sort by best match
+  suggestions.sort((a, b) => b.matchCount - a.matchCount);
+
+  return suggestions.map(s => s.key);
+}
+
 
 
 
